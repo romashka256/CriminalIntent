@@ -1,12 +1,13 @@
 package com.qubicoo.myapplication;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
-import database.CrimeBaseHelper;
+import database.CrimeDbSchema.CrimeTable;
 
 // Singleton to store one instance of the Crime Lab
 public class CrimeLab {
@@ -29,8 +30,6 @@ public class CrimeLab {
     // Constructor
     private CrimeLab(Context appContext) {
         mContext = appContext.getApplicationContext();
-        mDataBase = new CrimeBaseHelper(mContext).getWritableDatabase();
-        mCrimes = new ArrayList<Crime>();
 
 		/* For now, auto-populate the list
         for(int i = 0; i < 100; i++){
@@ -54,18 +53,23 @@ public class CrimeLab {
         return sCrimeLab;
     }
 
+    private static ContentValues getContentValues(Crime crime){
+        ContentValues values = new ContentValues();
+        values.put(CrimeTable.Cols.UUID,crime.getId().toString());
+        values.put(CrimeTable.Cols.TITLE,crime.getTitle());
+        values.put(CrimeTable.Cols.DATE,crime.getDate().getTime());
+        values.put(CrimeTable.Cols.SOLVED,crime.isSolved() ? 1 : 0);
+        return values;
+    }
+
     // Return entire list of crimes
     public ArrayList<Crime> getCrimes() {
-        return mCrimes;
+        return new ArrayList<>();
     }
 
     // Return only a specific crime
     public Crime getCrime(UUID id) {
-        for (Crime c : mCrimes) {
-            if (c.getId().equals(id)) {
-                return c;
-            }
-        }
+
         return null;
     }
 
