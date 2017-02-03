@@ -52,7 +52,6 @@ public class CrimeLab {
 
         return sCrimeLab;
     }
-
     private static ContentValues getContentValues(Crime crime){
         ContentValues values = new ContentValues();
         values.put(CrimeTable.Cols.UUID,crime.getId().toString());
