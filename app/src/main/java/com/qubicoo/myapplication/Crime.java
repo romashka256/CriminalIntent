@@ -53,6 +53,9 @@ public class Crime {
         return mTitle;
     }
 
+    public String getPhotoFileName(){
+        return "IMG_" + getId().toString()+ ".jpg";
+    }
     public void setTitle(String title) {
         mTitle = title;
     }
